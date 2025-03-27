@@ -49,7 +49,7 @@ const mealCategoryToCocktailIngredient = {
    Returns a Promise that resolves with the meal object
    */
   function fetchRandomMeal() {
-      fetch("https://www.themealdb.com/api/json/v1/1/random.php")
+      return fetch("https://www.themealdb.com/api/json/v1/1/random.php")
         .then(response => response.json())
         .then(data => {
           console.log("Meal Data:", data);
@@ -96,11 +96,11 @@ const mealCategoryToCocktailIngredient = {
     let ingredients = [];
     
     for (let i = 1; i <= 20; i++) {
-      let ingredient = meal['strIngredient${i}'];
-      let measure = meal['strMeasure${i}'];
+      let ingredient = meal[`strIngredient${i}`];
+      let measure = meal[`strMeasure${i}`];
       if (ingredient && ingredient.trim() !== "") {
         let li = document.createElement("li");
-        li.textContent = '${measure} ${ingredient}';
+        li.textContent = `${measure} ${ingredient}`;
         ingredients.push(li);
       }
     }
@@ -125,7 +125,7 @@ const mealCategoryToCocktailIngredient = {
   If no cocktails found, fetch random
   */
   function fetchCocktailByDrinkIngredient(drinkIngredient) {
-      fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=DRINK_INGREDIENT")
+      return fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${encodeURIComponent(drinkIngredient)}`)
         .then(response => response.json())
         .then(data => {
           console.log("Cocktail Data:", data);
@@ -138,9 +138,12 @@ const mealCategoryToCocktailIngredient = {
   Returns a Promise that resolves to cocktail object
   */
   function fetchRandomCocktail() {
-      fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+      return fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php")
         .then(response => response.json())
-        .then(data => data.drinks[0]);
+        .then(data => {
+            console.log("Random Cocktail Data:", data);
+            return data.drinks[0];
+        });
   }
   
   /*
@@ -176,11 +179,11 @@ const mealCategoryToCocktailIngredient = {
     let ingredients = [];
   
     for (let i = 1; i <= 15; i++) {
-      let ingredient = cocktail['strIngredient${i}'];
-      let measure = cocktail['strMeasure${i}'];
+      let ingredient = cocktail[`strIngredient${i}`];
+      let measure = cocktail[`strMeasure${i}`];
       if (ingredient && ingredient.trim() !== "") {
         let li = document.createElement("li");
-        li.textContent = '${measure ? measure : ""} ${ingredient}';
+        li.textContent = `${measure ? measure : ""} ${ingredient}`;
         ingredients.push(li);
       }
     }
