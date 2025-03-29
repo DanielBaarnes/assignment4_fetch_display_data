@@ -194,4 +194,68 @@ const mealCategoryToCocktailIngredient = {
   Call init() when the page loads
   */
   window.onload = init;
+
+/*
+Task 6)
+If the meal has a YouTube recipe video, it calls embedYouTubeVideo() to display the video
+*/
+
+  function displayMealData(meal) {
+    let mealContainer = document.getElementById("mealContainer");
+    mealContainer.textContent = "";
+  
+    let title = document.createElement("h2");
+    title.textContent = meal.strMeal;
+  
+    let img = document.createElement("img");
+    img.src = meal.strMealThumb;
+    img.alt = meal.strMeal;
+  
+    let category = document.createElement("p");
+    category.innerHTML = "Category: " + meal.strCategory;
+  
+    let ingredientsTitle = document.createElement("h3");
+    ingredientsTitle.textContent = "Ingredients:";
+  
+    let ingredientsList = document.createElement("ul");
+    getMealIngredients(meal).forEach((item) => ingredientsList.appendChild(item));
+  
+    let instructionsTitle = document.createElement("h3");
+    instructionsTitle.textContent = "Instructions:";
+  
+    let instructions = document.createElement("p");
+    instructions.textContent = meal.strInstructions;
+  
+    mealContainer.append(
+      title,
+      img,
+      category,
+      ingredientsTitle,
+      ingredientsList,
+      instructionsTitle,
+      instructions
+    );
+  
+    if (meal.strYoutube) {
+      let videoTitle = document.createElement("h3");
+      videoTitle.textContent = "YouTube Recipe:";
+      mealContainer.append(videoTitle);
+      embedYouTubeVideo(meal.strYoutube, mealContainer);
+    }
+  }
+/*
+Task 6)
+This function takes a YouTube URL and an HTML container as input
+*/
+
+  function embedYouTubeVideo(youtubeUrl, container) {
+    const videoId = youtubeUrl.split("v=")[1];
+    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    const iframe = document.createElement("iframe");
+    iframe.src = embedUrl;
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    container.appendChild(iframe);
+  }
+
+  
   
